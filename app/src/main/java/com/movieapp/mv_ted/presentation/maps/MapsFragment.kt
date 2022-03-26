@@ -1,3 +1,4 @@
+
 package com.movieapp.mv_ted.presentation.maps
 
 import android.Manifest
@@ -8,7 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -74,7 +74,6 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
                 setMarker(latLng, "")
                 drawLine()
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -138,7 +137,6 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
               )
         }
     }
-
     private fun initSearchByAddress(){
           binding?.btnSearch?.setOnClickListener{
             val geoCoder = Geocoder(it.context)
@@ -165,8 +163,10 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
                         e.printStackTrace()
                     }
                 }.start()
+
             }
         }
+
     }
 
     private fun goToAddress(view: View?, address: List<Address>, searchText: String) {
@@ -175,6 +175,7 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
                 setMarker(location, searchText)
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
            }
+
     }
 
     private fun findSearchingAddress(it: View?, searchText: String, geoCoder: Geocoder) {
@@ -235,12 +236,8 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
                 .build()
         }
         val geoService = Intent(context, GeofenceRequestReceiver :: class.java)
-        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent
-                .getBroadcast(context, 0, geoService, PendingIntent.FLAG_MUTABLE)
-        } else {
-            TODO("VERSION.SDK_INT < S")
-        }
+        val pendingIntent = PendingIntent
+            .getBroadcast(context, 0, geoService, PendingIntent.FLAG_MUTABLE)
         if (geofenceRequest != null) {
             geofenceClient.addGeofences(geofenceRequest, pendingIntent).run {
                 addOnSuccessListener {
