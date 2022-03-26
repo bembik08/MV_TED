@@ -2,7 +2,6 @@ package com.movieapp.mv_ted.ui.view
 
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +9,7 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -19,8 +19,6 @@ import com.movieapp.mv_ted.expirements.ContactProviderFragment
 import com.movieapp.mv_ted.services_and_broadcastReceivers.MainBroadcastReceiver
 import com.movieapp.mv_ted.ui.view.favorite_movies_fragment.LikedMoviesFragment
 import com.movieapp.mv_ted.ui.view.main_fragment.MainFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.view.*
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initToolbar(): androidx.appcompat.widget.Toolbar {
-        val toolbar = app_bar_main.toolbar
+        val toolbar = _binding.appBarMain.toolbar
         setSupportActionBar(toolbar)
         return toolbar
     }
