@@ -6,7 +6,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-
 import com.movieapp.mv_ted.R
 import com.movieapp.mv_ted.databinding.FragmentDetailBinding
 import com.movieapp.mv_ted.models.data.model.Comment
