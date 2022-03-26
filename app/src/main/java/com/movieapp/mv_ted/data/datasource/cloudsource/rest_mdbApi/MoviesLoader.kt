@@ -4,15 +4,15 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.movieapp.mv_ted.BuildConfig
-import com.movieapp.mv_ted.domain.models.response.MovieDTO
-import com.movieapp.mv_ted.domain.models.response.MovieResponse
+import com.movieapp.mv_ted.domain.models.response.movie.MovieDTO
+import com.movieapp.mv_ted.domain.models.response.movie.MovieResponse
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
 import java.util.stream.Collectors
 import javax.net.ssl.HttpsURLConnection
 
-object MoviesLoader {
+ object MoviesLoader {
      private lateinit var urlConnection : HttpsURLConnection
      fun loadMovies(uri: URL): MutableList<MovieResponse>? {
          try {

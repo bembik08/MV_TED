@@ -28,8 +28,4 @@
         android:text="@string/nav_header_more_information_text"
         android:textSize="@dimen/text_size_nav_header"
         />
-
-
-
-
 </LinearLayout>
