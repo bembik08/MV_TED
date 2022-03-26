@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.movieapp.mv_ted.data.repository.RepositoryImpl
 import com.movieapp.mv_ted.domain.AppState
 import com.movieapp.mv_ted.domain.models.response.MovieDTO
-import com.movieapp.mv_ted.domain.models.response.MovieResultDTO
+import com.movieapp.mv_ted.domain.models.response.MovieResponse
 import com.movieapp.mv_ted.domain.repository.Repository
 import com.movieapp.mv_ted.utils.uriNow
 import com.movieapp.mv_ted.utils.uriUpComing
@@ -20,8 +20,8 @@ class MainViewModel(val liveData: MutableLiveData<Any> = MutableLiveData(),
     fun getMovieData() = getDataFromLocalSource()
     fun loadMovieDataRetrofit(isAdult: Boolean) {
         liveData.value = AppState.Loading
-        var moviesPlayingNow : MutableList<MovieResultDTO>? = null
-        var moviesPlayingUpcoming : MutableList<MovieResultDTO>? = null
+        var moviesPlayingNow : MutableList<MovieResponse>? = null
+        var moviesPlayingUpcoming : MutableList<MovieResponse>? = null
         val callbackFromRetrofitWithMoviePlayingNow = object : Callback<MovieDTO>{
             override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
                 if (response.isSuccessful){ moviesPlayingNow = response.body()?.results
@@ -73,10 +73,11 @@ class MainViewModel(val liveData: MutableLiveData<Any> = MutableLiveData(),
 
         repository.getDataFromServerRetrofit(callbackFromRetrofitWithMoviePlayingNow)
         repository.getDataFromServerRetrofitUpcoming(callbackFromRetrofitWithMovieUpcoming)
+
     }
 
-       private fun noAdultMovies(moviesPlayingNow: MutableList<MovieResultDTO>?): MutableList<MovieResultDTO> {
-                val noAdultMovies : MutableList<MovieResultDTO> = mutableListOf()
+       private fun noAdultMovies(moviesPlayingNow: MutableList<MovieResponse>?): MutableList<MovieResponse> {
+                val noAdultMovies : MutableList<MovieResponse> = mutableListOf()
            if (moviesPlayingNow != null) {
                for (movie in moviesPlayingNow) {
                     if (!movie.adult) {

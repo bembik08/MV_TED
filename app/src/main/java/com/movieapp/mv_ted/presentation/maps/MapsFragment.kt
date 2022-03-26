@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.movieapp.mv_ted.R
 import com.movieapp.mv_ted.databinding.FragmentMapsBinding
 import com.movieapp.mv_ted.domain.AppState
-import com.movieapp.mv_ted.domain.models.response.MovieResultDTO
 import com.movieapp.mv_ted.utils.broadcastrecievers.GeofenceRequestReceiver
 
 class MapsFragment : Fragment(), ConnectionCallbacks {
@@ -45,6 +44,9 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
     private lateinit var geofenceClient : GeofencingClient
     private var geofence :Geofence? = null
     private val markers: ArrayList<Marker> = ArrayList()
+    private val movieId: Int? by lazy {
+        arguments?.getInt(MOVIE_ID)
+    }
     private val viewModel : MapsViewModel by lazy {
         ViewModelProvider(this).get(MapsViewModel::class.java)
     }
@@ -95,8 +97,7 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
         viewModel.liveData.observe(viewLifecycleOwner) {
             renderData(it)
         }
-        val movie : MovieResultDTO? = arguments?.getParcelable(MOVIE)
-        movie?.id?.let { viewModel.getCountryOfFilm(it) }
+        viewModel.getCountryOfFilm(movieId.toString())
         return binding?.root
     }
 
@@ -137,6 +138,7 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
               )
         }
     }
+
     private fun initSearchByAddress(){
           binding?.btnSearch?.setOnClickListener{
             val geoCoder = Geocoder(it.context)
@@ -260,7 +262,7 @@ class MapsFragment : Fragment(), ConnectionCallbacks {
     }
 
     companion object {
-        const val MOVIE = "movie"
+        const val MOVIE_ID = "movie_id"
         private const val REQUEST_CODE = 89
         private const val GEOFENCE_TIME = 800000L
         private const val RADIUS_GEOFENCE_REGION = 100f

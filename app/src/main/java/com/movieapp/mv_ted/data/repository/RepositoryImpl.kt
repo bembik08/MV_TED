@@ -10,14 +10,14 @@ import com.movieapp.mv_ted.domain.models.Comment
 import com.movieapp.mv_ted.domain.models.Movie
 import com.movieapp.mv_ted.domain.models.response.Film
 import com.movieapp.mv_ted.domain.models.response.MovieDTO
-import com.movieapp.mv_ted.domain.models.response.MovieResultDTO
+import com.movieapp.mv_ted.domain.models.response.MovieResponse
 import com.movieapp.mv_ted.domain.repository.Repository
 import com.movieapp.mv_ted.utils.getDataMovie
 import retrofit2.Callback
 import java.net.URL
 
 class RepositoryImpl : Repository {
-    override fun getDataFromServer(uri: URL): MutableList<MovieResultDTO>?  = MoviesLoader.loadMovies(uri)
+    override fun getDataFromServer(uri: URL): MutableList<MovieResponse>?  = MoviesLoader.loadMovies(uri)
     override fun getDataFromServerRetrofit(callback: Callback<MovieDTO>) {
         BackendRepo.api.getMoviesList().enqueue(callback)
     }
@@ -27,7 +27,7 @@ class RepositoryImpl : Repository {
     }
 
     override fun getDataFromServerAboutFilm(callback: Callback<Film>, movieId: String) {
-        BackendRepo.api.getMovieById(movieId).enqueue(callback)
+        BackendRepo.api.getMovieByIdCallBack(movieId).enqueue(callback)
     }
 
     override fun getDataFromLocalStorage() = getDataMovie()
@@ -59,6 +59,8 @@ class RepositoryImpl : Repository {
     override fun saveLikes(movie: Movie) {
        LikesMoviesDatabase.db.likesMoviesDao().insertLike(convertMovieToLikesEntity(movie))
     }
+
+    override suspend fun getMovieById(movieId: String): MovieResponse = BackendRepo.api.getMovieById(movieId = movieId)
 
     private fun convertMovieToLikesEntity(movie: Movie): LikesMoviesEntity =
         LikesMoviesEntity(0,movie.title, movie.image, movie.date, movie.description)
