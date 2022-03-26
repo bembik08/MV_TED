@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.movieapp.mv_ted.R
 import com.movieapp.mv_ted.databinding.FragmentDetailBinding
@@ -20,8 +19,11 @@ import com.movieapp.mv_ted.presentation.detail.adapter.DetailFragmentAdapter
 import com.movieapp.mv_ted.presentation.maps.MapsFragment
 import com.movieapp.mv_ted.utils.imageUri
 import com.squareup.picasso.Picasso
+import org.koin.android.ext.android.getKoin
+import org.koin.core.scope.Scope
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(R.layout.fragment_detail) {
+    override val scope: Scope = getKoin().createScope<DetailFragment>()
     override val viewBinding: FragmentDetailBinding by viewBinding()
     private val movieId: Int? by lazy {
         arguments?.getInt(MOVIE_ID)
@@ -30,9 +32,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(R.layout.fragment_det
     private var comments: MutableList<Comment>? = null
     private var likeImg = R.drawable.ic_baseline_tag_faces_24
     private val adapter: DetailFragmentAdapter by lazy { DetailFragmentAdapter() }
-    override val viewModel: DetailViewModel by lazy {
-        ViewModelProvider(this).get(DetailViewModel::class.java)
-    }
+    override val viewModel: DetailViewModel = scope.get()
 
     override fun onStart() {
         viewModel.getMovieById(movieId.toString())
